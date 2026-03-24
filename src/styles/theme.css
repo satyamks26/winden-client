@@ -1,0 +1,13 @@
+:root {
+    --radius: 12px;
+
+    --bg-base: #0a0a0a;
+    --bg-surface: #111111;
+
+    --border-subtle: #1f1f1f;
+
+    --text-primary: #f5f5f5;
+    --text-secondary: #a3a3a3;
+
+    --accent: #3b82f6;
+}

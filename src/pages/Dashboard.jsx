@@ -8,10 +8,16 @@ export default function Dashboard() {
 
     useEffect(() => {
         // Fetch real channel count from your backend!
-        fetch("http://localhost:5001/api/channels")
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5002";
+        const token = localStorage.getItem("token");
+        fetch(`${API_URL}/api/channels`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
             .then(res => res.json())
             .then(data => {
-                if (data.length) setStats({ totalChannels: data.length });
+                if (Array.isArray(data)) setStats({ totalChannels: data.length });
             })
             .catch(err => console.error("Failed to fetch dashboard stats", err));
     }, []);

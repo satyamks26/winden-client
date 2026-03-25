@@ -17,7 +17,8 @@ export default function Login() {
 
         try {
 
-            const res = await fetch("http://localhost:5001/api/auth/login", {
+            const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+            const res = await fetch(`${API_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,7 +70,7 @@ export default function Login() {
             footer={
                 <>
                     Don’t have an account?{" "}
-                    <span className="text-blue-400 cursor-pointer hover:underline">
+                    <span className="text-blue-400 cursor-pointer hover:underline" onClick={() => navigate("/signup")}>
                         Sign up
                     </span>
                 </>

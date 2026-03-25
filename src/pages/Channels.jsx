@@ -44,16 +44,23 @@ export default function Channels() {
                 const userId = payload.id;
 
                 const res = await fetch(
-                    `http://localhost:5001/api/channels`,
+                    `${import.meta.env.VITE_API_URL}/api/channels`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
 
-                const data = await res.json();
+                if (res.status === 401) {
+                    localStorage.removeItem("token");
+                    window.location.href = "/login";
+                    return;
+                }
 
+                if (!res.ok) throw new Error("Failed fetching channels");
+
+                const data = await res.json();
                 setChannels(data);
 
             } catch (err) {
-                console.error("Failed to load channels", err);
+                console.error("Failed to load channels:", err);
             }
 
         };
@@ -148,7 +155,6 @@ export default function Channels() {
             if (channelId === activeRef.current) {
                 setOnlineUsers(users);
             }
-
         };
 
         const onHistory = (msgs) => {
@@ -209,8 +215,10 @@ export default function Channels() {
 
         if (!activeChannel) return;
 
+        activeRef.current = activeChannel;
         setMessages([]);
         setTypingUsers([]);
+        setOnlineUsers([]);
 
         socket.emit("channel:history", {
             channelId: activeChannel

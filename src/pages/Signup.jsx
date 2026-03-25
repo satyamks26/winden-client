@@ -9,14 +9,17 @@ export default function Signup() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
 
     const handleSignup = async (e) => {
 
         e.preventDefault();
+        setErrorMsg("");
 
         try {
 
-            const res = await fetch("http://localhost:5001/api/auth/register", {
+            const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+            const res = await fetch(`${API_URL}/api/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -31,17 +34,15 @@ export default function Signup() {
             const data = await res.json();
 
             if (!res.ok) {
-                alert(data.error || "Signup failed");
+                setErrorMsg(data.error || "Signup failed");
                 return;
             }
-
-            alert("Account created successfully");
 
             navigate("/login");
 
         } catch (err) {
             console.error(err);
-            alert("Server error");
+            setErrorMsg("Server error: Could not physically connect.");
         }
     };
 
@@ -86,10 +87,15 @@ export default function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
+                {errorMsg && (
+                    <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-md text-red-500 text-sm font-medium">
+                        {errorMsg}
+                    </div>
+                )}
+
                 <button
                     type="submit"
-                    className="w-full mt-4 rounded-lg bg-blue-600 py-2.5 font-medium
-          hover:bg-blue-500 transition"
+                    className="w-full mt-4 rounded-lg bg-blue-600 py-2.5 font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-500 transition-colors"
                 >
                     Create account
                 </button>

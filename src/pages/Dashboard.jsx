@@ -8,7 +8,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         // Fetch real channel count from your backend!
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5002";
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
         const token = localStorage.getItem("token");
         fetch(`${API_URL}/api/channels`, {
             headers: {

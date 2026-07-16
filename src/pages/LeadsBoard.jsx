@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Plus, Building, DollarSign, GripVertical } from "lucide-react";
 
 export default function LeadsBoard() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
     const [leads, setLeads] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -14,7 +15,7 @@ export default function LeadsBoard() {
     const fetchLeads = async () => {
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:5001/api/leads", {
+            const res = await fetch(`${API_URL}/api/leads`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -40,7 +41,7 @@ export default function LeadsBoard() {
 
         try {
             const token = localStorage.getItem("token");
-            await fetch(`http://localhost:5001/api/leads/${id}/status`, {
+            await fetch(`${API_URL}/api/leads/${id}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,7 +68,7 @@ export default function LeadsBoard() {
 
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:5001/api/leads", {
+            const res = await fetch(`${API_URL}/api/leads`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
